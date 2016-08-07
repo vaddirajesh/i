@@ -28,7 +28,8 @@ class CalculatorBrain{
         "÷" : Operation.BinaryOperation({$0 / $1}),
         "+" : Operation.BinaryOperation({$0 + $1}),
         "-" : Operation.BinaryOperation({$0 - $1}),
-        "=" : Operation.Equals
+        "=" : Operation.Equals,
+        "·" : Operation.Dot
     ]
     
     enum Operation{
@@ -36,6 +37,7 @@ class CalculatorBrain{
         case UnaryOperation((Double) -> Double)
         case BinaryOperation((Double,Double) -> Double)
         case Equals
+        case Dot
     }
     
     func performOperation(_ symbol :String) {
@@ -46,8 +48,14 @@ class CalculatorBrain{
                 executePendingBinaryOperation()
                 pending = pendingBinaryOperationInfo(binaryFunciton: function, firstOperand: accumulator)
             case .UnaryOperation(let function) :accumulator = function(accumulator)
-            case .Equals :  executePendingBinaryOperation()           }
+            case .Equals :  executePendingBinaryOperation()
+            case .Dot : appendTextToAlreadyDisplayedText()
+            }
         }
+    }
+    
+    private func appendTextToAlreadyDisplayedText(){
+        
     }
     
     private func executePendingBinaryOperation(){
